@@ -18,25 +18,14 @@ custom() {
     done
 }
 
-if env | grep -q "^VG_AD"
+if env | grep -q "^VG_AD" && [ "$GENERATE_VG_ADS" -eq 1 ]
 then
     custom "ADS" "^VG_AD"
 fi
 
-misc_default() {
-    header MISC
-    add_vote "Restart" "restart"
-    add_vote "Shuffle teams" "shuffle_teams"
-}
-
-if [ "$VG_MISC_DISABLED" != 'true' ]
+if env | grep -q "^VG_MISC" && [ "$GENERATE_VG_MISC" -eq 1 ]
 then
-    if env | grep -q "^VG_MISC"
-    then
-        custom "MISC" "^VG_MISC"
-    else
-        misc_default
-    fi
+    custom "MISC" "^VG_MISC"
 fi
 
 scorelimits_custom() {
@@ -46,24 +35,10 @@ scorelimits_custom() {
     done
 }
 
-scorelimits_default() {
-    i=0
-    while [ "$i" -le 1000 ]
-    do
-        add_vote "$i" "sv_scorelimit $i"
-        i=$((i+100))
-    done
-}
-
-if [ ! "$VG_SCORELIMITS_DISABLED" = 'true' ]
+if [ -n "$VG_SCORELIMITS" ] && [ "$GENERATE_VG_SCORELIMITS" -eq 1 ]
 then
     header SCORELIMIT
-    if [ -z "$VG_SCORELIMITS" ]
-    then
-        scorelimits_default
-    else
-        scorelimits_custom "$VG_SCORELIMITS"
-    fi
+    scorelimits_custom "$VG_SCORELIMITS"
 fi
 
 vg_spectator_slots() {
@@ -83,7 +58,7 @@ vg_spectator_slots() {
     done
 }
 
-if [ ! "$VG_SPECTATOR_SLOTS_DISABLED" = 1 ]
+if [ "$GENERATE_VG_SPECTATOR_SLOTS" -eq 1 ]
 then
     header SLOTS
     vg_spectator_slots
@@ -97,9 +72,8 @@ maps() {
     done
 }
 
-if [ ! "$VG_MAPS_DISABLED" = 1 ]
+if find "$MAPS_DIR" -mindepth 1 -maxdepth 1 | read -r && [ "$GENERATE_VG_MAPS" -eq 1 ]
 then
     header MAPS
     maps
 fi
-
