@@ -7,7 +7,7 @@ env_to_commands() {
 }
 
 parse_envs() {
-    env | grep "$1" | while IFS= read -r i
+    env | sort | grep "$1" | while IFS= read -r i
     do
         if [ "$2" -eq 1 ]
         then
@@ -18,7 +18,7 @@ parse_envs() {
 }
 
 permissions() {
-    env | grep -e "^MOD_COMMAND" -e "^ACCESS_LEVEL" | while IFS= read -r i
+    env | sort | grep -e "^MOD_COMMAND" -e "^ACCESS_LEVEL" | while IFS= read -r i
     do
         TYPE="$(echo "${i}" | awk -F'=' '{ print $1 }')"
         VALUE="$(echo "${i}" | awk -F'=' '{ print $2 }')"
@@ -33,7 +33,7 @@ permissions() {
 }
 
 execs() {
-    env | grep "^EXEC" | while IFS= read -r i
+    env | sort | grep "^EXEC" | while IFS= read -r i
     do
         VALUE="$(echo "${i}" | awk -F'=' '{ print $2 }')"
         configurator.sh "exec" "$VALUE"
