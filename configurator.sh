@@ -2,7 +2,7 @@
 
 if grep -q "^$1" "$CONFIG_PATH"
 then
-    if grep -q "$1 $2" "$CONFIG_PATH"
+    if grep -q "^$1 $2" "$CONFIG_PATH"
     then
         echo "[init][configurator] '$1 $2' is already in the config. Skipping..."
     else
