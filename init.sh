@@ -40,16 +40,35 @@ execs() {
     done
 }
 
-if [ "$REFILL_CONFIG" -eq 1 ]
+if [ "$REGENERATE_VG" -eq 1 ]
 then
     true > "$CONFIG_PATH"
 fi
 
-parse_envs ^EC_ 0
-parse_envs ^SV_ 0
-parse_envs ^TW_ 1
-permissions
-execs
+if [ "$GENERATE_EC" -eq 1 ]
+then
+    parse_envs ^EC_ 0
+fi
+
+if [ "$GENERATE_SV" -eq 1 ]
+then
+    parse_envs ^SV_ 0
+fi
+
+if [ "$GENERATE_TW" -eq 1 ]
+then
+    parse_envs ^TW_ 1
+fi
+
+if [ "$GENERATE_PERMISSIONS" -eq 1 ]
+then
+    permissions
+fi
+
+if [ "$GENERATE_EXECS" -eq 1 ]
+then
+    execs
+fi
 
 if [ "$GENERATE_VG" -eq 1 ]
 then
