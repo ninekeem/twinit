@@ -6,7 +6,7 @@ Init scripts for teeworlds servers
 ` docker build -t twinit . `
 
 ### Executing
-**Please note that's single-use script, you don't need to pass `--restart`**
+**Please note that's single-use script, you don't need to pass `--restart` when you use docker/kubernetes etc.**
 #### With docker
 + `touch autoexec.cfg `
 + `docker run -e SV_PORT=8303 -e SV_REGISTER=1 -e SV_NAME='My Teeworlds Server' -v "$(pwd)/autoexec.cfg:/config`
