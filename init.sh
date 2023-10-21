@@ -32,11 +32,11 @@ permissions() {
     done
 }
 
-execs() {
-    env | sort | grep "^EXEC" | while IFS= read -r i
+other() {
+    env | sort | grep "$1" | while IFS= read -r i
     do
         VALUE="$(echo "${i}" | awk -F'=' '{ print $2 }')"
-        configurator.sh "exec" "$VALUE"
+        configurator.sh "$2" "$VALUE"
     done
 }
 
@@ -67,7 +67,12 @@ fi
 
 if [ "$GENERATE_EXECS" -eq 1 ]
 then
-    execs
+    other ^EXEC exec
+fi
+
+if [ "$GENERATE_TUNES" -eq 1 ]
+then
+	other ^TUNE tune
 fi
 
 if [ "$GENERATE_VG" -eq 1 ]
